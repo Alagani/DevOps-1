@@ -24,8 +24,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
          args: >
-               -Dsonar.organization= alagani
-               -Dsonar.projectKey= DevOps-1
+               -Dsonar.organization=alagani
+               -Dsonar.projectKey=DevOps-1
 
       - name: Build Docker image
         run: |
