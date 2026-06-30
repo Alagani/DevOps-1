@@ -65,7 +65,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            cd /home/${{ secrets.EC2_USER }}/deploy
+            cd /home/${{ secrets.EC2_USER }}/deploy/k8s
             sudo k3s kubectl apply -f deployment.yml
             sudo k3s kubectl apply -f service.yml
             sudo k3s kubectl rollout restart deployment/simple-python-app
