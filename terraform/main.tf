@@ -58,9 +58,14 @@ resource "aws_security_group" "allow_ssh" {
 }
 
 resource "aws_instance" "app_server" {
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = "t3.micro"
-  key_name               = aws_key_pair.ec2_key.key_name
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "m7i-flex.large"
+  key_name      = aws_key_pair.ec2_key.key_name
+  root_block_device {
+    volume_size           = 30
+    volume_type           = "gp3"
+    delete_on_termination = true
+  }
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
   tags = {
     Name = "learn-terraform"

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: your-dockerhub-username/simple-python-app:latest
+          image: jaga9989/simple-python-app:latest
           ports:
             - containerPort: 5000
           env:
