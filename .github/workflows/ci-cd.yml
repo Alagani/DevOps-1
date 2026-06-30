@@ -24,8 +24,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
          args: >
-               -Dsonar.organization=alagani
-               -Dsonar.projectKey=DevOps-1
+           -Dsonar.organization=alagani
+           -Dsonar.projectKey=DevOps-1
 
       - name: Build Docker image
         run: |
@@ -65,7 +65,27 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
+            set -e
+            
+            if ! command -v k3s >/dev/null 2>&1; then
+              echo "K3s not found. Installing K3s..."
+              curl -sfL https://get.k3s.io | sh -
+            else
+              echo "K3s already installed."
+            fi
+            
+            echo "Ensuring K3s service is running..."
+            sudo systemctl enable k3s
+            sudo systemctl start k3s
+            
+            echo "Waiting for K3s to be ready..."
+            until sudo k3s kubectl get nodes >/dev/null 2>&1; do
+              echo "Waiting for Kubernetes API..."
+              sleep 5
+            done
+            
             cd /home/${{ secrets.EC2_USER }}/deploy/k8s
+            
             sudo k3s kubectl apply -f deployment.yml
             sudo k3s kubectl apply -f service.yml
             sudo k3s kubectl rollout restart deployment/simple-python-app
