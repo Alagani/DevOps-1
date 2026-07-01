@@ -17,6 +17,3 @@ spec:
           image: jaga9989/simple-python-app:latest
           ports:
             - containerPort: 5000
-          env:
-            - name: FLASK_ENV
-              value: production
